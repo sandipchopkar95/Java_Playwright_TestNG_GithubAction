@@ -30,8 +30,15 @@ jobs:
       - name: Install Dependencies
         run: mvn install -DskipTests
 
+      - name: Set up Xvfb (for GUI applications, if needed)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+          Xvfb :99 &  # Start Xvfb on display :99
+          export DISPLAY=:99  # Set the DISPLAY environment variable
+
       - name: Run Tests
-        run: mvn test || echo "Tests failed but continuing."
+        run: mvn test -Djava.awt.headless=true || echo "Tests failed but continuing."
 
       - name: Archive Test Reports
         uses: actions/upload-artifact@v3
@@ -45,7 +52,7 @@ jobs:
     needs: run-tests
     permissions:
       contents: write
-    if: always() # Ensures this step runs even if tests fail
+    if: always()  # Ensures this step runs even if tests fail
 
     steps:
       - name: Checkout Code
