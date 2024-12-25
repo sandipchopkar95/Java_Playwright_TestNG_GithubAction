@@ -38,7 +38,7 @@ jobs:
           export DISPLAY=:99  # Set the DISPLAY environment variable
 
       - name: Run Tests
-        run: mvn test -Djava.awt.headless=true || echo "Tests failed but continuing."
+        run: mvn test
 
       - name: Archive Test Reports
         uses: actions/upload-artifact@v3
