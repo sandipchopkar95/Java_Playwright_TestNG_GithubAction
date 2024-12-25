@@ -38,7 +38,9 @@ jobs:
           export DISPLAY=:99  # Set the DISPLAY environment variable
 
       - name: Run Tests
-        run: mvn test
+        run: |
+          export DISPLAY=:99  # Ensure DISPLAY is set
+          mvn test
 
       - name: Archive Test Reports
         uses: actions/upload-artifact@v3
