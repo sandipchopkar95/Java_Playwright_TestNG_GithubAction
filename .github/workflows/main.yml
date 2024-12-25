@@ -64,6 +64,8 @@ jobs:
   deploy-pages:
     name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     needs: run-tests
     if: always()  # Ensures deployment happens even if the test job fails
 
