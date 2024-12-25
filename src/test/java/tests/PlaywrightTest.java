@@ -23,4 +23,10 @@ public class PlaywrightTest extends BaseTest {
         String actualHeader=homePage.get_Header_Label();
         Assert.assertEquals(actualHeader,"Failed");
     }
+
+    @Test(priority = 4)
+    public void verify_Home_Page_Header_Failed3(){
+        String actualHeader=homePage.get_Header_Label();
+        Assert.assertEquals(actualHeader,"Failed");
+    }
 }
