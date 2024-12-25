@@ -47,6 +47,7 @@ jobs:
         with:
           name: Test-Reports
           path: Reports/  # Ensure this path points to the entire Reports folder
+        if: always()  # Ensures this step runs even if tests fail
 
   deploy-pages:
     name: Deploy Reports to GitHub Pages
