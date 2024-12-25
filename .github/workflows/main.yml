@@ -12,21 +12,18 @@ jobs:
   run-tests:
     name: Run Playwright Tests
     runs-on: ubuntu-latest
-    continue-on-error: true  # Allow the tests to fail without failing the job
+    continue-on-error: true
 
     steps:
-      # Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up Java environment
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # Cache Maven dependencies
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
@@ -35,26 +32,21 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-m2
 
-      # Install dependencies without running tests
       - name: Install Maven dependencies
         run: mvn install -DskipTests
 
-      # Set up Xvfb for graphical tests
       - name: Start Xvfb
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb
           Xvfb :99 -screen 0 1920x1080x16 &
 
-      # Export DISPLAY variable
       - name: Export DISPLAY variable
         run: echo "DISPLAY=:99" >> $GITHUB_ENV
 
-      # Run Playwright tests
       - name: Run tests
         run: mvn test || echo "Tests failed, but continuing with the workflow."
 
-      # Archive the test results (even if tests fail)
       - name: Archive test results
         uses: actions/upload-artifact@v3
         with:
@@ -67,16 +59,14 @@ jobs:
     permissions:
       contents: write
     needs: run-tests
-    if: always()  # Ensures deployment happens even if the test job fails
+    if: always()
 
     steps:
-      # Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Deploy Reports to GitHub Pages
-      - name: Deploy Reports
+      - name: Deploy Reports to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          publish_dir: ./Reports
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN  }}
+          publish_dir: Reports/
