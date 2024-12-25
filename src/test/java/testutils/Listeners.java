@@ -1,6 +1,7 @@
 package testutils;
 
 import java.io.IOException;
+
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
@@ -12,6 +13,18 @@ public class Listeners extends TestUtils implements ITestListener {
     Page page;
     ExtentTest test;
     ExtentReports extent = TestUtils.getReporterObject();
+
+    public void onTestSuccess(ITestResult result) {
+        if (page != null) {
+            try {
+                // Capture a screenshot on failure
+                String screenshotPath = getScreenShotPath(result.getMethod().getMethodName(), page);
+                test.addScreenCaptureFromPath(screenshotPath, result.getMethod().getMethodName());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @Override
     public void onTestStart(ITestResult result) {
