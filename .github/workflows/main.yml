@@ -37,7 +37,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: Test-Reports
-          path: Reports/ # This should point to the directory containing your Extent reports
+          path: Reports/  # Ensure this path points to the entire Reports folder
 
   deploy-pages:
     name: Deploy Reports to GitHub Pages
@@ -60,6 +60,5 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          publish_dir: Reports/
+          publish_dir: Reports/  # This should be the directory with your reports and images
           force_orphan: true  # Create a new commit every time
-
