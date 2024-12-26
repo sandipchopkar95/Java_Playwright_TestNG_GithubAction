@@ -9,15 +9,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import com.microsoft.playwright.Browser;
-import com.microsoft.playwright.BrowserContext;
-import com.microsoft.playwright.BrowserType;
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.Playwright;
+import com.microsoft.playwright.*;
 import com.microsoft.playwright.BrowserType.LaunchOptions;
 
 public class PlaywrightFactory {
-    Playwright playwright;
+    /*Playwright playwright;
     Browser browser;
     BrowserContext browserContext;
     Page page;
@@ -112,5 +108,87 @@ public class PlaywrightFactory {
         String path = System.getProperty("user.dir" + "/screenshots/" + System.currentTimeMillis() + ".png");
         page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(path)).setFullPage(true));
         return path;
+    }*/
+//=================================================================
+    Playwright playwright;
+    Browser browser;
+    BrowserContext browserContext;
+    Page page;
+
+    private static ThreadLocal<Playwright> tlPlaywright = new ThreadLocal<>();
+    private static ThreadLocal<Browser> tlBrowser = new ThreadLocal<>();
+    private static ThreadLocal<BrowserContext> tlBrowserContext = new ThreadLocal<>();
+    private static ThreadLocal<Page> tlPage = new ThreadLocal<>();
+
+    public static Playwright getPlaywright() {
+        return tlPlaywright.get();
+    }
+
+    public static Browser getBrowser() {
+        return tlBrowser.get();
+    }
+
+    public static BrowserContext getBrowserContext() {
+        return tlBrowserContext.get();
+    }
+
+    public static Page getPage() {
+        return tlPage.get();
+    }
+
+    public Page initBrowser(String browserName, boolean headless) {
+        System.out.println("Browser name is: " + browserName);
+        tlPlaywright.set(Playwright.create());
+
+        ArrayList<String> arguments = new ArrayList<>();
+        arguments.add("--start-maximized");
+
+        switch (browserName.toLowerCase()) {
+            case "chrome":
+                tlBrowser.set(getPlaywright().chromium().launch(new BrowserType.LaunchOptions().setHeadless(headless)));
+                break;
+            case "firefox":
+                tlBrowser.set(getPlaywright().firefox().launch(new BrowserType.LaunchOptions().setHeadless(headless).setArgs(arguments)));
+                break;
+            case "webkit":
+                tlBrowser.set(getPlaywright().webkit().launch(new BrowserType.LaunchOptions().setHeadless(headless)));
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid browser name provided: " + browserName);
+        }
+
+        tlBrowserContext.set(getBrowser().newContext());
+        getBrowserContext().tracing().start(new Tracing.StartOptions().setScreenshots(true).setSnapshots(true));
+        tlPage.set(getBrowserContext().newPage());
+        getPage().navigate("https://playwright.dev/java/");
+        return getPage();
+    }
+
+    public static String saveTrace(String testName) {
+        String traceDirectory = "./Reports/Traces/";
+        String tracePath = traceDirectory + testName + "-trace.zip";
+
+        try {
+            java.nio.file.Files.createDirectories(Paths.get(traceDirectory));
+            getBrowserContext().tracing().stop(new Tracing.StopOptions().setPath(Paths.get(tracePath)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return tracePath;
+    }
+
+    public static Properties prop;
+
+    public Properties init_prop() {
+        try {
+            prop = new Properties();
+            FileInputStream ip = new FileInputStream("./src/test/resources/config/config.properties");
+            prop.load(ip);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException f) {
+            f.printStackTrace();
+        }
+        return prop;
     }
 }
