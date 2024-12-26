@@ -27,14 +27,14 @@ public class TestUtils {
         return extent;
     }
 
-    public static String getScreenShotPath(String testName, Page page) throws IOException {
-        String screenshotDirectory = System.getProperty("user.dir") + "/Reports/Screenshots/";
-        //String screenshotDirectory = "./Reports/Screenshots/";
-        String screenshotPath = screenshotDirectory + testName + ".png";
-
-        java.nio.file.Files.createDirectories(Paths.get(screenshotDirectory));
-        page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(screenshotPath)).setFullPage(true));
-        return screenshotPath;
+    public String getScreenShotPath(String testCaseName, Page page) throws IOException {
+        //String destinationField = System.getProperty("user.dir") + "/Reports/Screenshots/" + testCaseName + ".png";
+        //String destinationField = "./Reports/Screenshots/" + testCaseName + ".png";
+        String destinationField = "/Reports/Screenshots/" + testCaseName + ".png";
+        page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(destinationField)));
+        return destinationField;
     }
+
+
 
 }

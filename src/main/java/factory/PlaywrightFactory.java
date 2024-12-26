@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Properties;
 
 import com.microsoft.playwright.*;
@@ -164,17 +165,17 @@ public class PlaywrightFactory {
         return getPage();
     }
 
-    public static String saveTrace(String testName) {
-        String traceDirectory = System.getProperty("user.dir") + "/Reports/Traces/";
+    public static Optional<String> saveTrace(String testName) {
+        String traceDirectory = System.getProperty("report.trace.dir", "/Reports/Traces/");
         String tracePath = traceDirectory + testName + "-trace.zip";
-
         try {
             java.nio.file.Files.createDirectories(Paths.get(traceDirectory));
             getBrowserContext().tracing().stop(new Tracing.StopOptions().setPath(Paths.get(tracePath)));
+            return Optional.of(tracePath);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Failed to save trace for test: " + e);
+            return Optional.empty();
         }
-        return tracePath;
     }
 
     public static Properties prop;
