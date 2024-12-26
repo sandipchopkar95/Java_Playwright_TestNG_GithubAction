@@ -1,4 +1,4 @@
-name: Deploy Reports to GitHub Pages
+name: Run & Deploy Reports to GitHub Pages
 
 on:
   push:
@@ -70,8 +70,8 @@ jobs:
         with:
           name: Reports
           path: ./Reports
-            
-    # Copy the report to the public directory for GitHub Pages
+
+      # Copy the report to the public directory for GitHub Pages
       - name: Copy and Rename Playwright Report
         run: |
           mkdir -p public
