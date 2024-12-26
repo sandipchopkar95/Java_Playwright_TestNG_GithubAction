@@ -132,18 +132,18 @@ public class Listeners extends TestUtils implements ITestListener {
             Page page = PlaywrightFactory.getPage();
             if (page != null) {
                 String testName = result.getMethod().getMethodName();
-                String tracePath = PlaywrightFactory.saveTrace(testName);
-//                test.info("<a href='" + tracePath + "' target='_blank'>Download " + status + " Trace</a>");
-//                test.info("Path for download trace is : "+tracePath);
-                String relativeTracePath = "Traces/" + testName + "-trace.zip";; // Relative path
-
+                //String tracePath = PlaywrightFactory.saveTrace(testName);
+                String relativeTracePath = "Traces/" + testName + "-trace.zip";
                 // Log the clickable link for the trace file
                 test.info("<a href='" + relativeTracePath + "' target='_blank'>Download " + status + " Trace</a>");
                 test.info("Path for download trace is : " + relativeTracePath);
 
                 // Optionally add a screenshot
-                String screenshotPath = getScreenShotPath(testName, page);
-                test.addScreenCaptureFromPath(screenshotPath, testName);
+                String relativeScreenshotPath = "ScreenShots/" + testName + ".png";
+
+                //String screenshotPath = getScreenShotPath(testName, page);
+
+                test.addScreenCaptureFromPath(relativeScreenshotPath, testName);
             }
         } catch (Exception e) {
             e.printStackTrace();
