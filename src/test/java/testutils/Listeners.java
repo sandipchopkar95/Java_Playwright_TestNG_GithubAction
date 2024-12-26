@@ -37,7 +37,7 @@ public class Listeners extends TestUtils implements ITestListener {
         if (page != null) {
             attachScreenshotToReport(methodName, page, test);
             attachTrace(methodName);
-            attachVideo(methodName);
+            //attachVideo(methodName);
         }
     }
 
@@ -54,7 +54,7 @@ public class Listeners extends TestUtils implements ITestListener {
         if (page != null) {
             attachScreenshotToReport(methodName, page, test);
             attachTrace(methodName);
-            attachVideo(methodName);
+            //attachVideo(methodName);
         }
     }
 
