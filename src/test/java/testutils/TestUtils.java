@@ -27,13 +27,6 @@ public class TestUtils {
         return extent;
     }
 
-//    public String getScreenShotPath(String testCaseName, Page page) throws IOException {
-//        String destinationField = System.getProperty("user.dir") + "/Reports/ScreenShots/" + testCaseName + ".png";
-//        // Capture the screenshot and save it to the destination path
-//        page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(destinationField)));
-//        return destinationField;
-//    }
-
     public static String getScreenShotPath(String testName, Page page) throws IOException {
         String screenshotDirectory = "./Reports/Screenshots/";
         String screenshotPath = screenshotDirectory + testName + ".png";

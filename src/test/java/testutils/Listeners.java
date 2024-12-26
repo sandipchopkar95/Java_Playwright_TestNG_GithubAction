@@ -89,18 +89,12 @@ public class Listeners extends TestUtils implements ITestListener {
 
 //====================================================================
 package testutils;
-
-import java.io.File;
-import java.io.IOException;
-
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
-
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.microsoft.playwright.Page;
-
 import factory.PlaywrightFactory;
 
 public class Listeners extends TestUtils implements ITestListener {
@@ -140,6 +134,7 @@ public class Listeners extends TestUtils implements ITestListener {
                 String testName = result.getMethod().getMethodName();
                 String tracePath = PlaywrightFactory.saveTrace(testName);
                 test.info("<a href='" + tracePath + "' target='_blank'>Download " + status + " Trace</a>");
+                test.info("Path for download trace is : "+tracePath);
 
                 // Optionally add a screenshot
                 String screenshotPath = getScreenShotPath(testName, page);
@@ -150,30 +145,5 @@ public class Listeners extends TestUtils implements ITestListener {
         }
     }
 
-//    private void addTraceToReport(ITestResult result, String status) {
-//        try {
-//            Page page = PlaywrightFactory.getPage();
-//            if (page != null) {
-//                String testName = result.getMethod().getMethodName();
-//
-//                // Set the correct path for the trace file under Reports/Traces/
-//                String tracePath = "Reports/Traces/" + testName + "-trace.zip";
-//
-//                // Ensure that the trace file exists before linking
-//                File traceFile = new File(tracePath);
-//                if (traceFile.exists()) {
-//                    test.info("<a href='" + tracePath + "' target='_blank'>Download " + status + " Trace</a>");
-//                } else {
-//                    test.info("Trace file not found for test: " + testName);
-//                }
-//
-//                // Optionally add a screenshot
-//                String screenshotPath = getScreenShotPath(testName, page);
-//                test.addScreenCaptureFromPath(screenshotPath, testName);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 
 }
