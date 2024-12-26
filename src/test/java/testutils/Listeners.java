@@ -133,39 +133,13 @@ public class Listeners extends TestUtils implements ITestListener {
         extent.flush();
     }
 
-//    private void addTraceToReport(ITestResult result, String status) {
-//        try {
-//            Page page = PlaywrightFactory.getPage();
-//            if (page != null) {
-//                String testName = result.getMethod().getMethodName();
-//                String tracePath = PlaywrightFactory.saveTrace(testName);
-//                test.info("<a href='" + tracePath + "' target='_blank'>Download " + status + " Trace</a>");
-//
-//                // Optionally add a screenshot
-//                String screenshotPath = getScreenShotPath(testName, page);
-//                test.addScreenCaptureFromPath(screenshotPath, testName);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     private void addTraceToReport(ITestResult result, String status) {
         try {
             Page page = PlaywrightFactory.getPage();
             if (page != null) {
                 String testName = result.getMethod().getMethodName();
-
-                // Set the correct path for the trace file under Reports/Traces/
-                String tracePath = "Reports/Traces/" + testName + "-trace.zip";
-
-                // Ensure that the trace file exists before linking
-                File traceFile = new File(tracePath);
-                if (traceFile.exists()) {
-                    test.info("<a href='" + tracePath + "' target='_blank'>Download " + status + " Trace</a>");
-                } else {
-                    test.info("Trace file not found for test: " + testName);
-                }
+                String tracePath = PlaywrightFactory.saveTrace(testName);
+                test.info("<a href='" + tracePath + "' target='_blank'>Download " + status + " Trace</a>");
 
                 // Optionally add a screenshot
                 String screenshotPath = getScreenShotPath(testName, page);
@@ -175,5 +149,31 @@ public class Listeners extends TestUtils implements ITestListener {
             e.printStackTrace();
         }
     }
+
+//    private void addTraceToReport(ITestResult result, String status) {
+//        try {
+//            Page page = PlaywrightFactory.getPage();
+//            if (page != null) {
+//                String testName = result.getMethod().getMethodName();
+//
+//                // Set the correct path for the trace file under Reports/Traces/
+//                String tracePath = "Reports/Traces/" + testName + "-trace.zip";
+//
+//                // Ensure that the trace file exists before linking
+//                File traceFile = new File(tracePath);
+//                if (traceFile.exists()) {
+//                    test.info("<a href='" + tracePath + "' target='_blank'>Download " + status + " Trace</a>");
+//                } else {
+//                    test.info("Trace file not found for test: " + testName);
+//                }
+//
+//                // Optionally add a screenshot
+//                String screenshotPath = getScreenShotPath(testName, page);
+//                test.addScreenCaptureFromPath(screenshotPath, testName);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 }
