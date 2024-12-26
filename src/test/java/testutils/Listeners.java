@@ -127,7 +127,7 @@ public class Listeners extends TestUtils implements ITestListener {
         extent.flush();
     }
 
-    private void addTraceToReport(ITestResult result, String status) {
+    private void addTraceToReport1(ITestResult result, String status) {
         try {
             Page page = PlaywrightFactory.getPage();
             if (page != null) {
@@ -146,7 +146,7 @@ public class Listeners extends TestUtils implements ITestListener {
         }
     }
 
-    private void addTraceToReport1(ITestResult result, String status) {
+    private void addTraceToReport(ITestResult result, String status) {
         try {
             Page page = PlaywrightFactory.getPage();
             if (page != null) {
