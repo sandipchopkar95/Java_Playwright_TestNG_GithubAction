@@ -160,11 +160,11 @@ public class PlaywrightFactory {
             default:
                 throw new IllegalArgumentException("Invalid browser name provided: " + browserName);
         }
-        tlBrowserContext.set(getBrowser().newContext(new Browser.NewContextOptions()
+       /* tlBrowserContext.set(getBrowser().newContext(new Browser.NewContextOptions()
                 .setRecordVideoDir(Paths.get(videoDir))
                 .setRecordVideoSize(1280, 720)
-        ));
-        //tlBrowserContext.set(getBrowser().newContext());
+        ));*/
+        tlBrowserContext.set(getBrowser().newContext());
         getBrowserContext().tracing().start(new Tracing.StartOptions().setScreenshots(true).setSnapshots(true));
         tlPage.set(getBrowserContext().newPage());
         getPage().navigate("https://playwright.dev/java/");
