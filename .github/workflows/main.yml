@@ -72,10 +72,11 @@ jobs:
           path: ./Reports
             
     # Copy the report to the public directory for GitHub Pages
-      - name: Copy Playwright Report
+      - name: Copy and Rename Playwright Report
         run: |
           mkdir -p public
           cp -R Reports/* public/
+          mv public/Index.html public/index.html  # Rename the file to lowercase
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
