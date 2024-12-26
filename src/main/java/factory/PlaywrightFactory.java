@@ -5,6 +5,7 @@ import java.awt.Toolkit;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -116,6 +117,8 @@ public class PlaywrightFactory {
     BrowserContext browserContext;
     Page page;
 
+    String videoDir = "./Reports/videos";
+
     private static ThreadLocal<Playwright> tlPlaywright = new ThreadLocal<>();
     private static ThreadLocal<Browser> tlBrowser = new ThreadLocal<>();
     private static ThreadLocal<BrowserContext> tlBrowserContext = new ThreadLocal<>();
@@ -157,25 +160,15 @@ public class PlaywrightFactory {
             default:
                 throw new IllegalArgumentException("Invalid browser name provided: " + browserName);
         }
-
-        tlBrowserContext.set(getBrowser().newContext());
+        tlBrowserContext.set(getBrowser().newContext(new Browser.NewContextOptions()
+                .setRecordVideoDir(Paths.get(videoDir))
+                .setRecordVideoSize(1280, 720)
+        ));
+        //tlBrowserContext.set(getBrowser().newContext());
         getBrowserContext().tracing().start(new Tracing.StartOptions().setScreenshots(true).setSnapshots(true));
         tlPage.set(getBrowserContext().newPage());
         getPage().navigate("https://playwright.dev/java/");
         return getPage();
-    }
-
-    public static Optional<String> saveTrace(String testName) {
-        String traceDirectory = System.getProperty("report.trace.dir", "/Reports/Traces/");
-        String tracePath = traceDirectory + testName + "-trace.zip";
-        try {
-            java.nio.file.Files.createDirectories(Paths.get(traceDirectory));
-            getBrowserContext().tracing().stop(new Tracing.StopOptions().setPath(Paths.get(tracePath)));
-            return Optional.of(tracePath);
-        } catch (IOException e) {
-            System.out.println("Failed to save trace for test: " + e);
-            return Optional.empty();
-        }
     }
 
     public static Properties prop;
