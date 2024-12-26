@@ -165,7 +165,7 @@ public class PlaywrightFactory {
     }
 
     public static String saveTrace(String testName) {
-        String traceDirectory = "./Reports/Traces/";
+        String traceDirectory = System.getProperty("user.dir") + "/Reports/Traces/";
         String tracePath = traceDirectory + testName + "-trace.zip";
 
         try {
