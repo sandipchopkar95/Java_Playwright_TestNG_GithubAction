@@ -132,19 +132,31 @@ public class Listeners extends TestUtils implements ITestListener {
             Page page = PlaywrightFactory.getPage();
             if (page != null) {
                 String testName = result.getMethod().getMethodName();
-                //String tracePath = PlaywrightFactory.saveTrace(testName);
                 String relativeTracePath = "./Traces/" + testName + "-trace.zip";
                 // Log the clickable link for the trace file
                 test.info("<a href='" + relativeTracePath + "' target='_blank'>Download " + status + " Trace</a>");
                 test.info("Path for download trace is : " + relativeTracePath);
-
-                // Optionally add a screenshot
+                 //Optionally add a screenshot
                 String relativeScreenshotPath = "./ScreenShots/" + testName + ".png";
                 test.info("Path for Images is : " + relativeScreenshotPath);
-
-                //String screenshotPath = getScreenShotPath(testName, page);
-
                 test.addScreenCaptureFromPath(relativeScreenshotPath, testName);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addTraceToReport1(ITestResult result, String status) {
+        try {
+            Page page = PlaywrightFactory.getPage();
+            if (page != null) {
+                String testName = result.getMethod().getMethodName();
+                String tracePath = PlaywrightFactory.saveTrace(testName);
+                test.info("<a href='" + tracePath + "' target='_blank'>Download " + status + " Trace</a>");
+                test.info("Path for download trace is : " + tracePath);
+                String screenshotPath = getScreenShotPath(testName, page);
+                test.info("Path for Images is : " + screenshotPath);
+                test.addScreenCaptureFromPath(screenshotPath, testName);
             }
         } catch (Exception e) {
             e.printStackTrace();
