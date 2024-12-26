@@ -140,6 +140,7 @@ public class Listeners extends TestUtils implements ITestListener {
 
                 // Optionally add a screenshot
                 String relativeScreenshotPath = "ScreenShots/" + testName + ".png";
+                test.info("Path for Images is : " + relativeScreenshotPath);
 
                 //String screenshotPath = getScreenShotPath(testName, page);
 
