@@ -28,7 +28,8 @@ public class TestUtils {
     }
 
     public static String getScreenShotPath(String testName, Page page) throws IOException {
-        String screenshotDirectory = "./Reports/Screenshots/";
+        String screenshotDirectory = System.getProperty("user.dir") + "/Reports/Screenshots/";
+        //String screenshotDirectory = "./Reports/Screenshots/";
         String screenshotPath = screenshotDirectory + testName + ".png";
 
         java.nio.file.Files.createDirectories(Paths.get(screenshotDirectory));
