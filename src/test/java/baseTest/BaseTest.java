@@ -30,7 +30,7 @@ public class BaseTest {
         boolean headlessMode = Boolean.parseBoolean(headless);
         page = pf.initBrowser(browser, headlessMode);
 
-        homePage = new HomePage(page); // Initialize LoginPage with the Page instance
+        homePage = new HomePage(page);
     }
 
     @AfterMethod
