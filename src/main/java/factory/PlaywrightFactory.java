@@ -165,7 +165,7 @@ public class PlaywrightFactory {
                 .setRecordVideoSize(1280, 720)
         ));*/
         tlBrowserContext.set(getBrowser().newContext());
-        getBrowserContext().tracing().start(new Tracing.StartOptions().setScreenshots(true).setSnapshots(true));
+        //getBrowserContext().tracing().start(new Tracing.StartOptions().setScreenshots(true).setSnapshots(true));
         tlPage.set(getBrowserContext().newPage());
         getPage().navigate("https://playwright.dev/java/");
         return getPage();

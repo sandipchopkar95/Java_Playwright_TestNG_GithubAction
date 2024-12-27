@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import com.aventstack.extentreports.ExtentTest;
+import com.microsoft.playwright.Tracing;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import com.aventstack.extentreports.ExtentReports;
@@ -11,6 +14,8 @@ import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.microsoft.playwright.Page;
 import io.appium.java_client.AppiumDriver;
+
+import static factory.PlaywrightFactory.getBrowserContext;
 
 public class TestUtils {
     static ExtentReports extent;
@@ -28,22 +33,49 @@ public class TestUtils {
         return extent;
     }
 
-//    public String getScreenShotPath(String testCaseName, Page page) throws IOException {
-//        String destinationField = "/Reports/Screenshots/" + testCaseName + ".png";
-//        page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(destinationField)));
-//        return destinationField;
-//    }
-
     public static void takeScreenshot(Page page, String methodName) {
         try {
-            // Define the screenshot file path
-            Path screenshotPath = Paths.get("Reports/screenshots", methodName + ".png");
-            // Create parent directories if they do not exist
+            Path screenshotPath = Paths.get("./Reports/screenshots", methodName + ".png");
             screenshotPath.toFile().getParentFile().mkdirs();
-            // Take a screenshot and save it to the specified path
             page.screenshot(new Page.ScreenshotOptions().setPath(screenshotPath).setFullPage(true));
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void attachScreenshotToReport(ExtentTest test, String methodName, Page page) {
+        takeScreenshot(page, methodName);
+        String getScreenshotPath = "screenshots/" + methodName + ".png";
+        test.addScreenCaptureFromPath(getScreenshotPath, methodName);
+    }
+
+    public void attachTrace(ExtentTest test,String methodName) {
+        createTrace(methodName);
+        String getTracePath = "traces/" + methodName + "-trace.zip";
+        test.info("Trace: <a href='" + getTracePath + "' target='_blank'>Download Trace</a>");
+    }
+
+    public void createTrace(String testName) {
+        String traceDir = "./Reports/traces";
+        String traceFileName = testName + "-trace.zip";
+        try {
+            Path dir = Paths.get(traceDir);
+            java.nio.file.Files.createDirectories(dir);
+            Path tracePath = dir.resolve(traceFileName);
+            getBrowserContext().tracing().stop(new Tracing.StopOptions().setPath(tracePath));
+        } catch (IOException e) {
+            System.out.println("Failed to save trace for test: " + e.getMessage());
+        }
+    }
+
+    public void attachVideo(ExtentTest test,String methodName) {
+        String videoPath = "videos/" + methodName + "-video.mp4";
+        File videoFile = new File(videoPath);
+        if (videoFile.exists()) {
+            test.info("Video: <a href='" + videoPath + "' target='_blank'>Download Video</a>");
+            test.addVideoFromPath(videoPath, "Video for test: " + methodName);
+        } else {
+            test.warning("Video not available for this test.");
         }
     }
 }

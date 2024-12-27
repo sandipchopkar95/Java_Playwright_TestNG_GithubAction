@@ -23,6 +23,7 @@ public class Listeners extends TestUtils implements ITestListener {
     @Override
     public void onTestStart(ITestResult result) {
         test = extent.createTest(result.getMethod().getMethodName());
+        getBrowserContext().tracing().start(new Tracing.StartOptions().setScreenshots(true).setSnapshots(true));
     }
 
     @Override
@@ -35,8 +36,8 @@ public class Listeners extends TestUtils implements ITestListener {
             e.printStackTrace();
         }
         if (page != null) {
-            attachScreenshotToReport(methodName, page, test);
-            attachTrace(methodName);
+            attachScreenshotToReport(test, methodName, page);
+            attachTrace(test, methodName);
             //attachVideo(methodName);
         }
     }
@@ -52,8 +53,8 @@ public class Listeners extends TestUtils implements ITestListener {
             e.printStackTrace();
         }
         if (page != null) {
-            attachScreenshotToReport(methodName, page, test);
-            attachTrace(methodName);
+            attachScreenshotToReport(test, methodName, page);
+            attachTrace(test, methodName);
             //attachVideo(methodName);
         }
     }
@@ -74,41 +75,4 @@ public class Listeners extends TestUtils implements ITestListener {
     public void onFinish(ITestContext context) {
         extent.flush();
     }
-
-    private void attachScreenshotToReport(String methodName, Page page, ExtentTest test) {
-        takeScreenshot(page, methodName);
-        String getScreenshotPath = "screenshots/" + methodName + ".png";
-        test.addScreenCaptureFromPath(getScreenshotPath, methodName);
-    }
-
-    private void attachTrace(String methodName) {
-        createTrace(methodName);
-        String getTracePath = "traces/" + methodName + "-trace.zip";
-        test.info("Trace: <a href='" + getTracePath + "' target='_blank'>Download Trace</a>");
-    }
-
-    private void createTrace(String testName) {
-        String traceDir = "./Reports/traces";
-        String traceFileName = testName + "-trace.zip";
-        try {
-            Path dir = Paths.get(traceDir);
-            java.nio.file.Files.createDirectories(dir); // Ensure directory exists
-            Path tracePath = dir.resolve(traceFileName);
-            getBrowserContext().tracing().stop(new Tracing.StopOptions().setPath(tracePath));
-        } catch (IOException e) {
-            System.out.println("Failed to save trace for test: " + e.getMessage());
-        }
-    }
-
-    private void attachVideo(String methodName) {
-        String videoPath = "videos/" + methodName + "-video.mp4";
-        File videoFile = new File(videoPath);
-        if (videoFile.exists()) {
-            test.info("Video: <a href='" + videoPath + "' target='_blank'>Download Video</a>");
-            test.addVideoFromPath(videoPath, "Video for test: " + methodName);
-        } else {
-            test.warning("Video not available for this test.");
-        }
-    }
-
 }
