@@ -6,6 +6,7 @@ import org.testng.ITestListener;
 import org.testng.ITestResult;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
+
 import static factory.PlaywrightFactory.getBrowserContext;
 import static factory.PlaywrightFactory.getPage;
 
@@ -79,9 +80,20 @@ public class Listeners extends TestUtils implements ITestListener {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            stopTracing();
             threadLocalPage.remove();
             threadLocalTest.remove();
             threadLocalTracePath.remove();
+        }
+    }
+
+    private void stopTracing() {
+        try {
+            if (getBrowserContext().tracing() != null) {
+                getBrowserContext().tracing().stop();
+            }
+        } catch (Exception e) {
+            System.err.println("Error stopping tracing: " + e.getMessage());
         }
     }
 
