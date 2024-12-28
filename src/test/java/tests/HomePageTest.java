@@ -10,30 +10,30 @@ import pages.HomePage;
 public class HomePageTest extends BaseTest {
     HomePage homePage;
 
-    @BeforeMethod
+    @BeforeMethod(dependsOnMethods = "playwrightSetup")
     public void initializeHomePage() {
-        page.navigate("https://rc.truvideo.com/reports/home",
+        getPage().navigate("https://rc.truvideo.com/reports/home",
                 new Page.NavigateOptions().setTimeout(100000));
-        homePage = new HomePage(page);
+        homePage = new HomePage(getPage());
     }
 
     @Test
     public void verify_HomePage_Title_Page() {
-        String pageTitle = page.title();
+        String pageTitle = getPage().title();
         Assert.assertEquals(pageTitle, "TruVideo - Home", "Home page title not matched");
     }
 
     @Test
     public void verify_User_Is_Able_To_Navigate_To_RepairOrder_Page() {
         homePage.click_RepairOrder_Button();
-        String pageTitle = page.title();
+        String pageTitle = getPage().title();
         Assert.assertEquals(pageTitle, "TruVideo - Repair Orders", "Repair Order title not matched");
     }
 
     @Test
     public void verify_User_Is_Able_To_Navigate_To_Prospect_Page() {
         homePage.click_Prospect_Button();
-        String pageTitle = page.title();
+        String pageTitle = getPage().title();
         Assert.assertEquals(pageTitle, "TruVideo - Prospects", "Prospect title not matched");
     }
 

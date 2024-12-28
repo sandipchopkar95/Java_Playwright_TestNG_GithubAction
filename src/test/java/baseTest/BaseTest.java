@@ -1,24 +1,22 @@
 package baseTest;
 
-import java.util.Properties;
-
+import com.microsoft.playwright.Page;
 import factory.PlaywrightFactory;
 import org.testng.annotations.*;
-import com.microsoft.playwright.Page;
-import pages.HomePage;
+
+import java.util.Properties;
 
 import static factory.SessionManagement.clearSessionFile;
 
 public class BaseTest {
     protected PlaywrightFactory pf;
-    public Page page;
     protected Properties prop;
 
     @Parameters({"browser", "headless"})
     @BeforeSuite
     public void browserSetup_And_StoreSession(@Optional("chrome") String browser, @Optional("false") String headless) {
         pf = new PlaywrightFactory();
-        prop = pf.init_prop(); // will call config file
+        prop = pf.init_prop();
 
         if (browser == null || browser.isEmpty()) {
             browser = prop.getProperty("browser", "chrome");
@@ -27,16 +25,15 @@ public class BaseTest {
             headless = prop.getProperty("headless", "false");
         }
         boolean headlessMode = Boolean.parseBoolean(headless);
-        page = pf.initBrowser(browser, headlessMode);
-        page.context().browser().close();
+
+        // Pre-store session using shared BrowserContext
+        Page sessionPage = pf.initBrowser(browser, headlessMode);
+        sessionPage.context().browser().close();
     }
 
     @Parameters({"browser", "headless"})
     @BeforeMethod
     public void playwrightSetup(@Optional("chrome") String browser, @Optional("false") String headless) {
-        pf = new PlaywrightFactory();
-        prop = pf.init_prop(); // will call config file
-
         if (browser == null || browser.isEmpty()) {
             browser = prop.getProperty("browser", "chrome");
         }
@@ -44,17 +41,27 @@ public class BaseTest {
             headless = prop.getProperty("headless", "false");
         }
         boolean headlessMode = Boolean.parseBoolean(headless);
-        page = pf.initBrowser(browser, headlessMode);
+
+        pf = new PlaywrightFactory();
+        pf.initBrowser(browser, headlessMode);
+    }
+
+    protected Page getPage() {
+        return PlaywrightFactory.getPage();
     }
 
     @AfterMethod
     public void tearDown() {
-        page.close();
+        if (PlaywrightFactory.getPage() != null) {
+            PlaywrightFactory.getPage().close();
+        }
+        if (PlaywrightFactory.getBrowserContext() != null) {
+            PlaywrightFactory.getBrowserContext().close();
+        }
     }
 
     @AfterSuite
     public void clearSession() {
         clearSessionFile();
     }
-
 }
