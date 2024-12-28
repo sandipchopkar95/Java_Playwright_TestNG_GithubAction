@@ -85,26 +85,4 @@ public class Listeners extends TestUtils implements ITestListener {
         }
     }
 
-//    // Attach screenshot to the report
-//    private void attachScreenshotToReport(ExtentTest test, String methodName, Page page) {
-//        try {
-//            String screenshotPath = "./screenshots/" + methodName + ".png";
-//            page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get(screenshotPath)));
-//            test.addScreenCaptureFromPath(screenshotPath);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    // Attach trace to the report
-//    private void attachTrace(ExtentTest test, String methodName) {
-//        try {
-//            String tracePath = threadLocalTracePath.get();
-//            getBrowserContext().tracing().stop(new Tracing.StopOptions().setPath(Paths.get(tracePath)));
-//            test.info("Trace saved at: " + tracePath);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
 }

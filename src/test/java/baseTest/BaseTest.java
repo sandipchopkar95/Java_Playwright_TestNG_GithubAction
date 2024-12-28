@@ -49,7 +49,7 @@ public class BaseTest {
 
     @AfterMethod
     public void tearDown() {
-        page.context().close();
+        page.close();
     }
 
     @AfterSuite
