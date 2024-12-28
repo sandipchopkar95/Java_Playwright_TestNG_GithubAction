@@ -33,6 +33,7 @@ public class BaseTest {
     @Parameters({"browser", "headless"})
     @BeforeMethod
     public void playwrightSetup(@Optional("chrome") String browser, @Optional("false") String headless) {
+        playwrightFactory = new PlaywrightFactory();
         prop = playwrightFactory.init_prop();
         if (browser == null || browser.isEmpty()) {
             browser = prop.getProperty("browser", "chrome");
