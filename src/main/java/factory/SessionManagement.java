@@ -3,12 +3,14 @@ package factory;
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Page;
+import pages.LoginPage;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static factory.PlaywrightFactory.getBrowser;
+import static factory.PlaywrightFactory.prop;
 
 public class SessionManagement {
 
@@ -25,12 +27,9 @@ public class SessionManagement {
             System.out.println("Session file not found. Logging in to create a new session.");
             context = getBrowser().newContext(); // Create a new context
             Page page = context.newPage();
-            page.navigate("https://rc.truvideo.com/login");
-            page.fill(".input-prepend input[name='j_username']", "dineshadvisor@gmail.com");
-            page.fill(".input-prepend input[name='j_password']", "Sandip@1234");
-            page.click("input[value='Log In']");
-            // Wait for successful login
-            page.waitForTimeout(3000);
+            page.navigate(prop.getProperty("loginPageUrl"));
+            LoginPage loginPage =new LoginPage(page);
+            loginPage.loginWithValidCredential(prop.getProperty("username"), prop.getProperty("password"));
             // Save session to a file
             context.storageState(new BrowserContext.StorageStateOptions().setPath(sessionPath));
             System.out.println("Session state saved.");

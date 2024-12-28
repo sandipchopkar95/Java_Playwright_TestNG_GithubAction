@@ -9,14 +9,14 @@ import java.util.Properties;
 import static factory.SessionManagement.clearSessionFile;
 
 public class BaseTest {
-    protected PlaywrightFactory pf;
+    protected PlaywrightFactory playwrightFactory;
     protected Properties prop;
 
     @Parameters({"browser", "headless"})
     @BeforeSuite
     public void browserSetup_And_StoreSession(@Optional("chrome") String browser, @Optional("false") String headless) {
-        pf = new PlaywrightFactory();
-        prop = pf.init_prop();
+        playwrightFactory = new PlaywrightFactory();
+        prop = playwrightFactory.init_prop();
 
         if (browser == null || browser.isEmpty()) {
             browser = prop.getProperty("browser", "chrome");
@@ -27,7 +27,7 @@ public class BaseTest {
         boolean headlessMode = Boolean.parseBoolean(headless);
 
         // Pre-store session using shared BrowserContext
-        Page sessionPage = pf.initBrowser(browser, headlessMode);
+        Page sessionPage = playwrightFactory.initBrowser(browser, headlessMode);
         sessionPage.context().browser().close();
     }
 
@@ -42,8 +42,8 @@ public class BaseTest {
         }
         boolean headlessMode = Boolean.parseBoolean(headless);
 
-        pf = new PlaywrightFactory();
-        pf.initBrowser(browser, headlessMode);
+        playwrightFactory = new PlaywrightFactory();
+        playwrightFactory.initBrowser(browser, headlessMode);
     }
 
     protected Page getPage() {
