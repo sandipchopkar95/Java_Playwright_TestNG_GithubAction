@@ -4,11 +4,9 @@ import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Page;
 import pages.LoginPage;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
 import static factory.PlaywrightFactory.getBrowser;
 import static factory.PlaywrightFactory.prop;
 

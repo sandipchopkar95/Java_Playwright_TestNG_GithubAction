@@ -27,7 +27,8 @@ public class ROListPage {
     }
 
     public String getWarningMessage(){
-        return page.textContent(warnMsg_notification);
+        page.waitForTimeout(500);
+        return page.innerText(warnMsg_notification);
     }
 
 }

@@ -14,7 +14,7 @@ public class PlaywrightFactory {
     private static final ThreadLocal<Browser> tlBrowser = new ThreadLocal<>();
     protected static final ThreadLocal<BrowserContext> tlBrowserContext = new ThreadLocal<>();
     private static final ThreadLocal<Page> tlPage = new ThreadLocal<>();
-    public static Properties prop;
+    public static Properties prop ;
 
     public static Playwright getPlaywright() {
         return tlPlaywright.get();
@@ -57,7 +57,7 @@ public class PlaywrightFactory {
 
     public Properties init_prop() {
         try {
-            prop = new Properties();
+             prop = new Properties();
             FileInputStream ip = new FileInputStream("./src/test/resources/config/config.properties");
             prop.load(ip);
         } catch (FileNotFoundException e) {

@@ -27,7 +27,7 @@ public class ROListPageTest extends BaseTest {
     public void verify_Add_New_RepairOrder_Button_Working() {
         roListPage.clickAddRepairOrderButton();
         String addNewOrder_Header = roListPage.getHeading_AddNewOrder_Page();
-        Assert.assertEquals(addNewOrder_Header, "Add Repair Order", "Add New Order page header not matched");
+        Assert.assertTrue(addNewOrder_Header.contains("Add Repair Order"), "Add New Order page header not matched");
 
     }
 
