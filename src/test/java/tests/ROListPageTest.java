@@ -39,7 +39,7 @@ public class ROListPageTest extends BaseTest {
         if (warnMessage.contains("Please select repair orders to be closed.")) {
             flag = true;
         }
-        Assert.assertTrue(false, "Warning message not matched");
+        Assert.assertTrue(flag, "Warning message not matched");
     }
 
 }

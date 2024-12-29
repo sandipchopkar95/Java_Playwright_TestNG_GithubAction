@@ -24,7 +24,6 @@ public class BaseTest {
             headless = prop.getProperty("headless", "false");
         }
         boolean headlessMode = Boolean.parseBoolean(headless);
-
         // Pre-store session using shared BrowserContext
         Page sessionPage = playwrightFactory.initBrowser(browser, headlessMode);
         sessionPage.context().browser().close();
@@ -42,7 +41,6 @@ public class BaseTest {
             headless = prop.getProperty("headless", "false");
         }
         boolean headlessMode = Boolean.parseBoolean(headless);
-
         playwrightFactory = new PlaywrightFactory();
         playwrightFactory.initBrowser(browser, headlessMode);
     }
