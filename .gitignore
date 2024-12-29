@@ -38,7 +38,7 @@ build/
 .DS_Store
 /.
 /Reports/Index.html
-/Reports/ScreenShots/**
-
-/Reports/Traces/**
+/Reports/screenshots/**
+/Reports/traces/**
 /UserSession/**
+/Reports/videos/**

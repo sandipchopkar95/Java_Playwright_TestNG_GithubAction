@@ -14,7 +14,7 @@ public class BaseTest {
 
     @Parameters({"browser", "headless"})
     @BeforeSuite
-    public void browserSetup_And_StoreSession(@Optional("chrome") String browser, @Optional("false") String headless) {
+    public void initialize_Browser_And_Save_Session(@Optional("chrome") String browser, @Optional("false") String headless) {
         playwrightFactory = new PlaywrightFactory();
         prop = playwrightFactory.init_prop();
         if (browser == null || browser.isEmpty()) {
@@ -31,7 +31,7 @@ public class BaseTest {
 
     @Parameters({"browser", "headless"})
     @BeforeMethod
-    public void playwrightSetup(@Optional("chrome") String browser, @Optional("false") String headless) {
+    public void initialize_Browser_With_Session(@Optional("chrome") String browser, @Optional("false") String headless) {
         playwrightFactory = new PlaywrightFactory();
         prop = playwrightFactory.init_prop();
         if (browser == null || browser.isEmpty()) {

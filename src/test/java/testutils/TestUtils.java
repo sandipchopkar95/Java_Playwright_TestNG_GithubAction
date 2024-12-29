@@ -4,18 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
 import com.aventstack.extentreports.ExtentTest;
 import com.microsoft.playwright.Tracing;
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.microsoft.playwright.Page;
-import io.appium.java_client.AppiumDriver;
-
 import static factory.PlaywrightFactory.getBrowserContext;
+import static testutils.MyScreenRecorder.stopRecording;
 
 public class TestUtils {
     static ExtentReports extent;
@@ -68,14 +64,15 @@ public class TestUtils {
         }
     }
 
-    public void attachVideo(ExtentTest test,String methodName) {
-        String videoPath = "videos/" + methodName + "-video.mp4";
+    public void attachVideo(ExtentTest test, String methodName) throws Exception {
+        stopRecording();
+        String videoPath = "videos/" + methodName + ".avi";
         File videoFile = new File(videoPath);
         if (videoFile.exists()) {
             test.info("Video: <a href='" + videoPath + "' target='_blank'>Download Video</a>");
-            test.addVideoFromPath(videoPath, "Video for test: " + methodName);
         } else {
-            test.warning("Video not available for this test.");
+            test.info("Video not available for this test.");
         }
+        test.addVideoFromPath(videoPath);
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public class HomePageTest extends BaseTest {
     HomePage homePage;
 
-    @BeforeMethod(dependsOnMethods = "playwrightSetup")
+    @BeforeMethod(dependsOnMethods = "initialize_Browser_With_Session")
     public void initializeHomePage() {
         getPage().navigate(prop.getProperty("homePageUrl"),
                 new Page.NavigateOptions().setTimeout(100000));

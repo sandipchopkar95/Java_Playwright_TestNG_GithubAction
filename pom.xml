@@ -65,6 +65,17 @@
             <artifactId>commons-email</artifactId>
             <version>1.5</version>
         </dependency>
+        <!-- video recording provider-->
+        <dependency>
+            <groupId>com.github.stephenc.monte</groupId>
+            <artifactId>monte-screen-recorder</artifactId>
+            <version>0.7.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jcodec</groupId>
+            <artifactId>jcodec</artifactId>
+            <version>0.2.5</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

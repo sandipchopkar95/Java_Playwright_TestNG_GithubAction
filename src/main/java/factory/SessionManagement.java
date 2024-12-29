@@ -19,8 +19,12 @@ public class SessionManagement {
         BrowserContext context;
         if (Files.exists(sessionPath)) {
             System.out.println("Session file found. Using existing session.");
-            context = getBrowser().newContext(new Browser.NewContextOptions()
-                    .setStorageStatePath(sessionPath));
+            context = getBrowser().newContext(
+                    new Browser.NewContextOptions()
+                            .setStorageStatePath(sessionPath)
+//                            .setRecordVideoDir(Paths.get("./Reports/videos/"))
+//                            .setRecordVideoSize(1280, 720)
+            );
         } else {
             System.out.println("Session file not found. Logging in to create a new session.");
             context = getBrowser().newContext(); // Create a new context

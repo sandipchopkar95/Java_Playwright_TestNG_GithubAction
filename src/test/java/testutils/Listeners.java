@@ -6,9 +6,9 @@ import org.testng.ITestListener;
 import org.testng.ITestResult;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
-
 import static factory.PlaywrightFactory.getBrowserContext;
 import static factory.PlaywrightFactory.getPage;
+import static testutils.MyScreenRecorder.startRecording;
 
 public class Listeners extends TestUtils implements ITestListener {
 
@@ -25,10 +25,17 @@ public class Listeners extends TestUtils implements ITestListener {
         ExtentTest test = extent.createTest(result.getMethod().getMethodName());
         threadLocalTest.set(test);
         // Generate a unique trace file path for this test
-        String tracePath = "./traces/" + result.getMethod().getMethodName() + ".zip";
+        String tracePath = "./Reports/traces/" + result.getMethod().getMethodName() + ".zip";
         threadLocalTracePath.set(tracePath);
         // Start tracing for this test
         getBrowserContext().tracing().start(new Tracing.StartOptions().setScreenshots(true).setSnapshots(true));
+        //Start recording for this test
+        String recordingPath="./Reports/videos/";
+        try {
+            startRecording(result.getMethod().getMethodName(),recordingPath);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         Page page = getPage();
         threadLocalPage.set(page);
     }
@@ -73,6 +80,7 @@ public class Listeners extends TestUtils implements ITestListener {
             if (page != null && test != null) {
                 attachScreenshotToReport(test, methodName, page);
                 attachTrace(test, methodName);
+                attachVideo(test,methodName);
                 if (!isSuccess) {
                     test.fail(result.getThrowable());
                 }
@@ -96,5 +104,6 @@ public class Listeners extends TestUtils implements ITestListener {
             System.err.println("Error stopping tracing: " + e.getMessage());
         }
     }
+
 
 }

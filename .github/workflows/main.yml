@@ -52,7 +52,7 @@ jobs:
         with:
           name: Reports
           path: Reports/  # Ensure this path points to the entire Reports folder
-
+          retention-days: 7  # Set the retention period to 7 days
 
   deploy-pages:
     name: Deploy Reports to GitHub Pages

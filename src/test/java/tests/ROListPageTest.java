@@ -10,7 +10,7 @@ import pages.ROListPage;
 public class ROListPageTest extends BaseTest {
     ROListPage roListPage;
 
-    @BeforeMethod
+    @BeforeMethod(dependsOnMethods = "initialize_Browser_With_Session")
     public void initializeROListPage() {
         getPage().navigate(prop.getProperty("roListPageUrl"),
                 new Page.NavigateOptions().setTimeout(100000));

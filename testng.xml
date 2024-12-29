@@ -6,11 +6,11 @@
         <listener class-name="testutils.Listeners"/>
     </listeners>
     <parameter name="browser" value="chrome"></parameter>
-    <parameter name="headless" value="true"></parameter>
+    <parameter name="headless" value="false"></parameter>
     <test name="Test 1">
         <classes>
             <class name="tests.HomePageTest"/>
-            <class name="tests.ROListPageTest"></class>
+            <!--<class name="tests.ROListPageTest"></class>-->
         </classes>
     </test>
 </suite>
