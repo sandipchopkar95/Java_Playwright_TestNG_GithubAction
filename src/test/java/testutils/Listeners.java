@@ -30,12 +30,12 @@ public class Listeners extends TestUtils implements ITestListener {
         // Start tracing for this test
         getBrowserContext().tracing().start(new Tracing.StartOptions().setScreenshots(true).setSnapshots(true));
         //Start recording for this test
-        String recordingPath="./Reports/videos/";
-        try {
-            startRecording(result.getMethod().getMethodName(),recordingPath);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+//        String recordingPath="./Reports/videos/";
+//        try {
+//            startRecording(result.getMethod().getMethodName(),recordingPath);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
         Page page = getPage();
         threadLocalPage.set(page);
     }
@@ -80,7 +80,7 @@ public class Listeners extends TestUtils implements ITestListener {
             if (page != null && test != null) {
                 attachScreenshotToReport(test, methodName, page);
                 attachTrace(test, methodName);
-                attachVideo(test,methodName);
+                //attachVideo(test,methodName);
                 if (!isSuccess) {
                     test.fail(result.getThrowable());
                 }
