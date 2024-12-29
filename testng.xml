@@ -10,7 +10,7 @@
     <test name="Test 1">
         <classes>
             <class name="tests.HomePageTest"/>
-            <!--<class name="tests.ROListPageTest"></class>-->
+            <class name="tests.ROListPageTest"></class>
         </classes>
     </test>
 </suite>
