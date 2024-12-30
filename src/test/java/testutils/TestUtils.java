@@ -46,12 +46,7 @@ public class TestUtils {
         takeScreenshot(page, methodName);
         String screenshotPath = "screenshots/" + methodName + ".png";
         try {
-            File screenshotFile = new File(screenshotPath);
-            if (screenshotFile.exists()) {
-                test.addScreenCaptureFromPath(screenshotPath, methodName);
-            } else {
-                test.info("Screenshot not found for method: " + methodName);
-            }
+            test.addScreenCaptureFromPath(screenshotPath, methodName);
         } catch (Exception e) {
             test.info("Error attaching screenshot: " + e.getMessage());
         }
@@ -61,12 +56,7 @@ public class TestUtils {
         createTrace(methodName);
         String tracePath = "traces/" + methodName + "-trace.zip";
         try {
-            File traceFile = new File(tracePath);
-            if (traceFile.exists()) {
                 test.info("Trace: <a href='" + tracePath + "' target='_blank'>Download Trace</a>");
-            } else {
-                test.info("Trace file not found for method: " + methodName);
-            }
         } catch (Exception e) {
             test.info("Error attaching trace: " + e.getMessage());
         }
