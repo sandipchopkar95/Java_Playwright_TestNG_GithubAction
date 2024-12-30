@@ -1,41 +1,37 @@
 package testutils;
 
 import com.microsoft.playwright.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
+import java.lang.reflect.Method;
 import static factory.PlaywrightFactory.getBrowserContext;
 import static factory.PlaywrightFactory.getPage;
-import static testutils.MyScreenRecorder.startRecording;
+import static testutils.JiraTestCaseUtils.attachJiraTestId;
 
 public class Listeners extends TestUtils implements ITestListener {
-
-    // ThreadLocal to store page, test objects, and trace file paths for each test thread
-    private static ThreadLocal<Page> threadLocalPage = new ThreadLocal<>();
-    private static ThreadLocal<ExtentTest> threadLocalTest = new ThreadLocal<>();
-    private static ThreadLocal<String> threadLocalTracePath = new ThreadLocal<>();
+    public Logger logger = LogManager.getLogger(this.getClass().getName());
+    private static final ThreadLocal<Page> threadLocalPage = new ThreadLocal<>();
+    private static final ThreadLocal<ExtentTest> threadLocalTest = new ThreadLocal<>();
+    private static final ThreadLocal<String> threadLocalTracePath = new ThreadLocal<>();
 
     ExtentReports extent = TestUtils.getReporterObject();
 
     @Override
     public void onTestStart(ITestResult result) {
-        // Create a new test entry in ExtentReports for this thread
-        ExtentTest test = extent.createTest(result.getMethod().getMethodName());
+        Method method = result.getMethod().getConstructorOrMethod().getMethod();
+        String methodName = result.getMethod().getMethodName();
+        ExtentTest test = extent.createTest(methodName);
         threadLocalTest.set(test);
-        // Generate a unique trace file path for this test
-        String tracePath = "./Reports/traces/" + result.getMethod().getMethodName() + ".zip";
+        logger.info("Test Execution started for test case : {}", methodName);
+        String tracePath = "./Reports/traces/" + methodName + ".zip";
         threadLocalTracePath.set(tracePath);
-        // Start tracing for this test
         getBrowserContext().tracing().start(new Tracing.StartOptions().setScreenshots(true).setSnapshots(true));
-        //Start recording for this test
-//        String recordingPath="./Reports/videos/";
-//        try {
-//            startRecording(result.getMethod().getMethodName(),recordingPath);
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
+        attachJiraTestId(method,test);
         Page page = getPage();
         threadLocalPage.set(page);
     }
@@ -52,22 +48,21 @@ public class Listeners extends TestUtils implements ITestListener {
 
     @Override
     public void onTestSkipped(ITestResult result) {
-        // Handle test skipped scenarios if needed
+
     }
 
     @Override
     public void onTestFailedButWithinSuccessPercentage(ITestResult result) {
-        // Handle tests that fail but are within success percentage
+
     }
 
     @Override
     public void onStart(ITestContext context) {
-        // Start of the test suite or test
+
     }
 
     @Override
     public void onFinish(ITestContext context) {
-        // Finish the test suite or test and flush the reports
         extent.flush();
     }
 

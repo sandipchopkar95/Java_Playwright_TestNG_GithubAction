@@ -2,6 +2,7 @@ package testutils;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import com.aventstack.extentreports.ExtentTest;
@@ -10,6 +11,8 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.microsoft.playwright.Page;
+import org.testng.annotations.Test;
+
 import static factory.PlaywrightFactory.getBrowserContext;
 import static testutils.MyScreenRecorder.stopRecording;
 
@@ -75,4 +78,5 @@ public class TestUtils {
         }
         test.addVideoFromPath(videoPath);
     }
+
 }

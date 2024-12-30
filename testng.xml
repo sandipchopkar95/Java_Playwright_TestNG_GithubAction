@@ -6,7 +6,7 @@
         <listener class-name="testutils.Listeners"/>
     </listeners>
     <parameter name="browser" value="chrome"></parameter>
-    <parameter name="headless" value="false"></parameter>
+    <parameter name="headless" value="true"></parameter>
     <test name="Test 1">
         <classes>
             <class name="tests.HomePageTest"/>
