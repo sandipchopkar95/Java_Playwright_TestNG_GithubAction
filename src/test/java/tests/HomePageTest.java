@@ -2,6 +2,7 @@ package tests;
 
 import baseTest.BaseTest;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.LoadState;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -17,11 +18,12 @@ public class HomePageTest extends BaseTest {
     public void initializeHomePage() {
         getPage().navigate(prop.getProperty("homePageUrl"),
                 new Page.NavigateOptions().setTimeout(100000));
+        getPage().waitForLoadState(LoadState.DOMCONTENTLOADED);
         homePage = new HomePage(getPage());
     }
 
     @Test
-    @AdditionalDescriptions({"WA-6341", "WA-001"})
+    @AdditionalDescriptions({"WA-6341", "WA-0001"})
     public void verify_HomePage_Title_Page() {
         String pageTitle = getPage().title();
         Assert.assertEquals(pageTitle, "TruVideo - Home", "Home page title not matched");

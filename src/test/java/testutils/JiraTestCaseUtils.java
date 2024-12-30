@@ -1,8 +1,6 @@
 package testutils;
 import com.aventstack.extentreports.ExtentTest;
 import org.testng.annotations.Test;
-
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
