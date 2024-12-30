@@ -51,12 +51,24 @@ public class BaseTest {
 
     @AfterMethod
     public void tearDown() {
-        if (PlaywrightFactory.getPage() != null) {
-            getPage().waitForTimeout(2000);
-            PlaywrightFactory.getPage().close();
-        }
-        if (PlaywrightFactory.getBrowserContext() != null) {
-            PlaywrightFactory.getBrowserContext().close();
+        try {
+            if (PlaywrightFactory.getPage() != null) {
+                getPage().waitForTimeout(3000);
+                try {
+                    PlaywrightFactory.getPage().close();
+                } catch (Exception e) {
+                    System.out.println("Page already closed: " + e.getMessage());
+                }
+            }
+            if (PlaywrightFactory.getBrowserContext() != null) {
+                try {
+                    PlaywrightFactory.getBrowserContext().close();
+                } catch (Exception e) {
+                    System.out.println("BrowserContext already closed: " + e.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error during tearDown: " + e.getMessage());
         }
     }
 
