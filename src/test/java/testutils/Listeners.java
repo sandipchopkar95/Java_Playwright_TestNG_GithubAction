@@ -8,7 +8,9 @@ import org.testng.ITestListener;
 import org.testng.ITestResult;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
+
 import java.lang.reflect.Method;
+
 import static factory.PlaywrightFactory.getBrowserContext;
 import static factory.PlaywrightFactory.getPage;
 import static testutils.JiraTestCaseUtils.attachJiraTestId;
@@ -23,6 +25,7 @@ public class Listeners extends TestUtils implements ITestListener {
 
     @Override
     public void onTestStart(ITestResult result) {
+        getBrowserContext().tracing().start(new Tracing.StartOptions().setScreenshots(true).setSnapshots(true));
         Method method = result.getMethod().getConstructorOrMethod().getMethod();
         String methodName = result.getMethod().getMethodName();
         ExtentTest test = extent.createTest(methodName);
@@ -30,8 +33,7 @@ public class Listeners extends TestUtils implements ITestListener {
         logger.info("Test Execution started for test case : {}", methodName);
         String tracePath = "./Reports/traces/" + methodName + ".zip";
         threadLocalTracePath.set(tracePath);
-        getBrowserContext().tracing().start(new Tracing.StartOptions().setScreenshots(true).setSnapshots(true));
-        attachJiraTestId(method,test);
+        attachJiraTestId(method, test);
         Page page = getPage();
         threadLocalPage.set(page);
     }
