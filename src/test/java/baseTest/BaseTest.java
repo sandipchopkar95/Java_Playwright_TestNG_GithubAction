@@ -52,6 +52,7 @@ public class BaseTest {
     @AfterMethod
     public void tearDown() {
         if (PlaywrightFactory.getPage() != null) {
+            getPage().waitForTimeout(2000);
             PlaywrightFactory.getPage().close();
         }
         if (PlaywrightFactory.getBrowserContext() != null) {
