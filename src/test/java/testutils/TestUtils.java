@@ -44,14 +44,32 @@ public class TestUtils {
 
     public void attachScreenshotToReport(ExtentTest test, String methodName, Page page) {
         takeScreenshot(page, methodName);
-        String getScreenshotPath = "screenshots/" + methodName + ".png";
-        test.addScreenCaptureFromPath(getScreenshotPath, methodName);
+        String screenshotPath = "screenshots/" + methodName + ".png";
+        try {
+            File screenshotFile = new File(screenshotPath);
+            if (screenshotFile.exists()) {
+                test.addScreenCaptureFromPath(screenshotPath, methodName);
+            } else {
+                test.info("Screenshot not found for method: " + methodName);
+            }
+        } catch (Exception e) {
+            test.info("Error attaching screenshot: " + e.getMessage());
+        }
     }
 
-    public void attachTrace(ExtentTest test,String methodName) {
+    public void attachTrace(ExtentTest test, String methodName) {
         createTrace(methodName);
-        String getTracePath = "traces/" + methodName + "-trace.zip";
-        test.info("Trace: <a href='" + getTracePath + "' target='_blank'>Download Trace</a>");
+        String tracePath = "traces/" + methodName + "-trace.zip";
+        try {
+            File traceFile = new File(tracePath);
+            if (traceFile.exists()) {
+                test.info("Trace: <a href='" + tracePath + "' target='_blank'>Download Trace</a>");
+            } else {
+                test.info("Trace file not found for method: " + methodName);
+            }
+        } catch (Exception e) {
+            test.info("Error attaching trace: " + e.getMessage());
+        }
     }
 
     public void createTrace(String testName) {
