@@ -12,8 +12,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <playwright-version>1.41.0</playwright-version>
         <extentreports-version>5.1.2</extentreports-version>
         <java-client-version>9.2.2</java-client-version>
@@ -32,7 +32,6 @@
             <artifactId>testng</artifactId>
             <version>${testng-version}</version>
         </dependency>
-        <!-- dependencies for Extent Report-->
         <dependency>
             <groupId>com.aventstack</groupId>
             <artifactId>extentreports</artifactId>
@@ -43,7 +42,6 @@
             <artifactId>java-client</artifactId>
             <version>${java-client-version}</version>
         </dependency>
-        <!--Loggin dependencies-->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
@@ -59,13 +57,11 @@
             <artifactId>commons-io</artifactId>
             <version>2.15.1</version>
         </dependency>
-        <!-- email provider-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-email</artifactId>
             <version>1.5</version>
         </dependency>
-        <!-- video recording provider-->
         <dependency>
             <groupId>com.github.stephenc.monte</groupId>
             <artifactId>monte-screen-recorder</artifactId>
@@ -77,6 +73,7 @@
             <version>0.2.5</version>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -84,8 +81,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -94,10 +91,13 @@
                 <version>3.0.0-M5</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>testng.xml</suiteXmlFile>
+                        <!--suppress UnresolvedMavenProperty -->
+                        <suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
                     </suiteXmlFiles>
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
                     <disableXmlReport>false</disableXmlReport>
+                    <parallel>methods</parallel>
+                    <threadCount>4</threadCount>
                 </configuration>
             </plugin>
         </plugins>

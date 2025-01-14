@@ -15,7 +15,6 @@ jobs:
     strategy:
       matrix:
         suite: [testng.xml, testng1.xml, testng2.xml]  # List your test suites here
-        fail-fast: false  # Ensures that all matrix jobs continue even if one fails
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
