@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        suite: [suite1.xml, suite2.xml, suite3.xml]  # List your XML suites here
+        suite: [testng.xml, testng1.xml, testng2.xml]  # List your XML suites here
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
