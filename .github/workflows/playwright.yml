@@ -70,14 +70,16 @@ jobs:
       - name: Install Dependencies
         run: mvn install -DskipTests
 
-      - name: Merge Reports
-        run: mvn merge:merge
+      - name: Merge HTML Reports
+        run: |
+          echo "Running HTML merge step"
+          mvn exec:java -Dexec.mainClass="testutils.MergeReport"
 
       - name: Archive Merged Report
         uses: actions/upload-artifact@v4
         with:
           name: FinalReport
-          path: Reports/ConsolidatedReport.html
+          path: ./Reports/merged_report.html  # Path to your merged report
 
   deploy-pages:
     name: Deploy to GitHub Pages
@@ -99,7 +101,7 @@ jobs:
       - name: Prepare Report for Deployment
         run: |
           mkdir -p public
-          cp FinalReport/ConsolidatedReport.html public/index.html
+          cp FinalReport/merged_report.html public/index.html  # Rename to index.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

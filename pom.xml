@@ -102,23 +102,19 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>com.bekioui.maven.plugin</groupId>
-                <artifactId>merge-maven-plugin</artifactId>
-                <version>1.2.0</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
                 <executions>
                     <execution>
-                        <phase>package</phase>
                         <goals>
-                            <goal>merge</goal>
+                            <goal>java</goal>
                         </goals>
+                        <configuration>
+                            <mainClass>src/test/java/testutils.MergeReport</mainClass>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <sources>
-                        <source>Reports/*.html</source>
-                    </sources>
-                    <destination>Reports/ConsolidatedReport.html</destination>
-                </configuration>
             </plugin>
         </plugins>
     </build>

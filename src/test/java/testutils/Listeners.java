@@ -63,7 +63,7 @@ public class Listeners extends TestUtils implements ITestListener, ISuiteListene
     }
 
     @Override
-    public void onFinish(ITestContext context) {
+    public void onFinish(ISuite suite) {
         extent.flush();
     }
 
