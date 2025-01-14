@@ -19,9 +19,9 @@ import static testutils.MyScreenRecorder.stopRecording;
 public class TestUtils {
     static ExtentReports extent;
 
-    public static ExtentReports getReporterObject() {
-        String path = System.getProperty("user.dir") + "/Reports";
-        ExtentSparkReporter reporter = new ExtentSparkReporter(path);
+    public static ExtentReports getReporterObject(String reportFileName) {
+        //String path = System.getProperty("user.dir") + "/Reports";
+        ExtentSparkReporter reporter = new ExtentSparkReporter("Reports/" + reportFileName);
         reporter.config().setReportName("RC Truvideo Web App");
         reporter.config().setDocumentTitle("Web Automation Test Report");
         reporter.config().setTheme(Theme.STANDARD);

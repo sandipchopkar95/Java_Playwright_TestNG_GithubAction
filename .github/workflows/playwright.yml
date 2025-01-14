@@ -44,7 +44,7 @@ jobs:
         if: ${{ always() }}
         with:
           name: ExtentReports-${{ matrix.suite }}
-          path: ./Reports/
+          path: ./Reports/  # No need to specify the exact report file, just the folder
 
       - name: Log Archived Report Details
         if: ${{ always() }}
@@ -124,6 +124,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
           force_orphan: true
-        # Add logging
+
       - name: Log Deployment Success
         run: echo "Deployed the final report to GitHub Pages successfully!"

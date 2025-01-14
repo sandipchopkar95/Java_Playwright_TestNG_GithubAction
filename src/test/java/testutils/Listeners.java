@@ -3,25 +3,24 @@ package testutils;
 import com.microsoft.playwright.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.testng.ITestContext;
-import org.testng.ITestListener;
-import org.testng.ITestResult;
-import com.aventstack.extentreports.ExtentReports;
+import org.testng.*;
 import com.aventstack.extentreports.ExtentTest;
-
 import java.lang.reflect.Method;
-
 import static factory.PlaywrightFactory.getBrowserContext;
 import static factory.PlaywrightFactory.getPage;
 import static testutils.JiraTestCaseUtils.attachJiraTestId;
 
-public class Listeners extends TestUtils implements ITestListener {
+public class Listeners extends TestUtils implements ITestListener, ISuiteListener {
     public Logger logger = LogManager.getLogger(this.getClass().getName());
     private static final ThreadLocal<Page> threadLocalPage = new ThreadLocal<>();
     private static final ThreadLocal<ExtentTest> threadLocalTest = new ThreadLocal<>();
     private static final ThreadLocal<String> threadLocalTracePath = new ThreadLocal<>();
 
-    ExtentReports extent = TestUtils.getReporterObject();
+    @Override
+    public void onStart(ISuite suite) {
+        String suiteName = suite.getName();
+        extent = TestUtils.getReporterObject("ExtentReport-" + suiteName + ".html");
+    }
 
     @Override
     public void onTestStart(ITestResult result) {
