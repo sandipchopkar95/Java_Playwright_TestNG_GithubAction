@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        suite: [testng.xml, testng1.xml]  # List your test suites here
+        suite: [testng.xml, testng1.xml, testng2.xml]  # List your test suites here
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -44,12 +44,12 @@ jobs:
         if: ${{ always() }}
         with:
           name: ExtentReports-${{ matrix.suite }}
-          path: ./Reports/  # Ensure this is the directory where reports are generated
-        # Add logging
-        env:
-          SUITE: ${{ matrix.suite }}
+          path: ./Reports/
+
+      - name: Log Archived Report Details
+        if: ${{ always() }}
         run: |
-          echo "Archiving report for test suite: $SUITE"
+          echo "Archiving report for test suite: ${{ matrix.suite }}"
           ls -la ./Reports/
 
   merge-reports:
@@ -66,9 +66,10 @@ jobs:
         with:
           name: ExtentReports-*
           path: ./Reports
-        # Add logging
+
+      - name: Log Downloaded Reports
         run: |
-          echo "Downloading all ExtentReports artifacts..."
+          echo "Downloaded all ExtentReports artifacts..."
           ls -la ./Reports
 
       - name: Merge Extent Reports
@@ -86,10 +87,6 @@ jobs:
         with:
           name: FinalReport
           path: FinalReport/
-        # Add logging
-        run: |
-          echo "Archiving merged report..."
-          ls -la FinalReport/
 
   deploy-pages:
     name: Deploy to GitHub Pages
@@ -107,7 +104,8 @@ jobs:
         with:
           name: FinalReport
           path: ./FinalReport
-        # Add logging
+
+      - name: Log Final Report Details
         run: |
           echo "Downloading the final merged report..."
           ls -la ./FinalReport
@@ -127,4 +125,5 @@ jobs:
           publish_dir: ./public
           force_orphan: true
         # Add logging
-        run: echo "Deploying the final report to GitHub Pages..."
+      - name: Log Deployment Success
+        run: echo "Deployed the final report to GitHub Pages successfully!"
