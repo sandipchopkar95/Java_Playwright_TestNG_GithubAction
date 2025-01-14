@@ -100,6 +100,25 @@
                     <threadCount>4</threadCount>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.bekioui.maven.plugin</groupId>
+                <artifactId>merge-maven-plugin</artifactId>
+                <version>1.2.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>merge</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <sources>
+                        <source>Reports/*.html</source> <!-- Path to your HTML files -->
+                    </sources>
+                    <outputFile>Reports/ConsolidatedReport.html</outputFile> <!-- Output file path -->
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
