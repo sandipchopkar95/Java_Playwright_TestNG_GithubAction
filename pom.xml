@@ -19,6 +19,8 @@
         <java-client-version>9.2.2</java-client-version>
         <testng-version>7.10.2</testng-version>
         <log-4j-verision>2.23.1</log-4j-verision>
+        <suiteXmlFile>testng.xml</suiteXmlFile>
+        <suiteXmlFile>testng2.xml</suiteXmlFile>
     </properties>
 
     <dependencies>
@@ -91,7 +93,6 @@
                 <version>3.0.0-M5</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <!--suppress UnresolvedMavenProperty -->
                         <suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
                     </suiteXmlFiles>
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
@@ -114,9 +115,9 @@
                 </executions>
                 <configuration>
                     <sources>
-                        <source>Reports/*.html</source> <!-- Path to your HTML files -->
+                        <source>Reports/*.html</source>
                     </sources>
-                    <outputFile>Reports/ConsolidatedReport.html</outputFile> <!-- Output file path -->
+                    <destination>Reports/ConsolidatedReport.html</destination>
                 </configuration>
             </plugin>
         </plugins>
