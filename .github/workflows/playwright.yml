@@ -1,113 +1,113 @@
-name: Run & Deploy Reports to GitHub Pages
+# name: Run & Deploy Reports to GitHub Pages
 
-on:
-  push:
-    branches:
-      - main
-      - master
-  workflow_dispatch:
+# on:
+#   push:
+#     branches:
+#       - main
+#       - master
+#   workflow_dispatch:
 
-jobs:
-  run-tests:
-    timeout-minutes: 60
-    name: Run Tests
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        suite: [testng.xml, testng1.xml]  # List your test suites here
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+# jobs:
+#   run-tests:
+#     timeout-minutes: 60
+#     name: Run Tests
+#     runs-on: ubuntu-latest
+#     strategy:
+#       matrix:
+#         suite: [testng.xml, testng1.xml]  # List your test suites here
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v4
 
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
+#       - name: Set up Java
+#         uses: actions/setup-java@v4
+#         with:
+#           java-version: '17'
+#           distribution: 'temurin'
 
-      - name: Cache Maven Packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-m2
+#       - name: Cache Maven Packages
+#         uses: actions/cache@v4
+#         with:
+#           path: ~/.m2
+#           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+#           restore-keys: |
+#             ${{ runner.os }}-m2
 
-      - name: Install Dependencies
-        run: mvn install -DskipTests
+#       - name: Install Dependencies
+#         run: mvn install -DskipTests
 
-      - name: Run Playwright Tests
-        run: mvn test -Dsurefire.suiteXmlFiles=${{ matrix.suite }}
+#       - name: Run Playwright Tests
+#         run: mvn test -Dsurefire.suiteXmlFiles=${{ matrix.suite }}
 
-      - name: Archive Suite Reports
-        uses: actions/upload-artifact@v4
-        if: ${{ always() }}
-        with:
-          name: ExtentReports-${{ matrix.suite }}
-          path: ./Reports/  # Archive all report files
+#       - name: Archive Suite Reports
+#         uses: actions/upload-artifact@v4
+#         if: ${{ always() }}
+#         with:
+#           name: ExtentReports-${{ matrix.suite }}
+#           path: ./Reports/  # Archive all report files
 
-      - name: Log Archived Report Details
-        if: ${{ always() }}
-        run: |
-          echo "Archiving report for test suite: ${{ matrix.suite }}"
-          ls -la ./Reports/
+#       - name: Log Archived Report Details
+#         if: ${{ always() }}
+#         run: |
+#           echo "Archiving report for test suite: ${{ matrix.suite }}"
+#           ls -la ./Reports/
 
-  merge-reports:
-    name: Merge Extent Reports
-    runs-on: ubuntu-latest
-    needs: run-tests
-    if: always()
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+#   merge-reports:
+#     name: Merge Extent Reports
+#     runs-on: ubuntu-latest
+#     needs: run-tests
+#     if: always()
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v4
 
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
+#       - name: Set up Java
+#         uses: actions/setup-java@v4
+#         with:
+#           java-version: '17'
+#           distribution: 'temurin'
 
-      - name: Install Dependencies
-        run: mvn install -DskipTests
+#       - name: Install Dependencies
+#         run: mvn install -DskipTests
 
-      - name: Merge HTML Reports
-        run: |
-          echo "Running HTML merge step"
-          mvn exec:java -Dexec.mainClass="testutils.MergeReport"
+#       - name: Merge HTML Reports
+#         run: |
+#           echo "Running HTML merge step"
+#           mvn exec:java -Dexec.mainClass="testutils.MergeReport"
 
-      - name: Archive Merged Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: FinalReport
-          path: ./Reports/merged_report.html  # Path to your merged report
+#       - name: Archive Merged Report
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: FinalReport
+#           path: ./Reports/merged_report.html  # Path to your merged report
 
-  deploy-pages:
-    name: Deploy to GitHub Pages
-    runs-on: ubuntu-latest
-    needs: merge-reports
-    if: always()
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+#   deploy-pages:
+#     name: Deploy to GitHub Pages
+#     runs-on: ubuntu-latest
+#     needs: merge-reports
+#     if: always()
+#     permissions:
+#       contents: write
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v4
 
-      - name: Download Final Report
-        uses: actions/download-artifact@v4
-        with:
-          name: FinalReport
-          path: ./FinalReport
+#       - name: Download Final Report
+#         uses: actions/download-artifact@v4
+#         with:
+#           name: FinalReport
+#           path: ./FinalReport
 
-      - name: Prepare Report for Deployment
-        run: |
-          mkdir -p public
-          cp FinalReport/merged_report.html public/index.html  # Rename to index.html
+#       - name: Prepare Report for Deployment
+#         run: |
+#           mkdir -p public
+#           cp FinalReport/merged_report.html public/index.html  # Rename to index.html
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+#       - name: Deploy to GitHub Pages
+#         uses: peaceiris/actions-gh-pages@v3
+#         with:
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           publish_dir: ./public
 
-      - name: Log Deployment Success
-        run: echo "Deployed the final report to GitHub Pages successfully!"
+#       - name: Log Deployment Success
+#         run: echo "Deployed the final report to GitHub Pages successfully!"
