@@ -1,87 +1,87 @@
-#name: Run & Deploy Reports to GitHub Pages
-#
-#on:
-#  push:
-#    branches:
-#      - main  # Trigger on changes to the main branch
-#      - master
-#
-#  workflow_dispatch:
-#
-#jobs:
-#  run-tests:
-#    timeout-minutes: 60
-#    name: Run Tests
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout Code
-#        uses: actions/checkout@v4
-#
-#      - name: Set up Java
-#        uses: actions/setup-java@v4
-#        with:
-#          java-version: '17'
-#          distribution: 'temurin'
-#
-#      - name: Cache Maven Packages
-#        uses: actions/cache@v4
-#        with:
-#          path: ~/.m2
-#          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-#          restore-keys: |
-#            ${{ runner.os }}-m2
-#
-#      - name: Install Dependencies
-#        run: mvn install -DskipTests
-#
-#      - name: Set up Xvfb (for GUI applications, if needed)
-#        run: |
-#          sudo apt-get update
-#          sudo apt-get install -y xvfb
-#          Xvfb :99 &  # Start Xvfb on display :99
-#          export DISPLAY=:99  # Set the DISPLAY environment variable
-#
-#      - name: Run Tests
-#        run: |
-#          export DISPLAY=:99  # Ensure DISPLAY is set
-#          mvn test
-#
-#      - name: Archive Test Reports
-#        uses: actions/upload-artifact@v4
-#        if: ${{ always() }}  # Ensures this step runs even if tests fail
-#        with:
-#          name: Reports
-#          path: Reports/  # Ensure this path points to the entire Reports folder
-#          retention-days: 7  # Set the retention period to 7 days
-#
-#  deploy-pages:
-#    name: Deploy Reports to GitHub Pages
-#    runs-on: ubuntu-latest
-#    if: ${{ always() }}  # Ensures this step runs even if tests fail
-#    needs: run-tests
-#    permissions:
-#      contents: write
-#
-#    steps:
-#      - name: Checkout Code
-#        uses: actions/checkout@v4
-#
-#      - name: Download Test Reports
-#        uses: actions/download-artifact@v4
-#        with:
-#          name: Reports
-#          path: ./Reports
-#
-#      # Copy the report to the public directory for GitHub Pages
-#      - name: Copy and Rename Playwright Report
-#        run: |
-#          mkdir -p public
-#          cp -R Reports/* public/
-#          mv public/Index.html public/index.html  # Rename the file to lowercase
-#
-#      - name: Deploy to GitHub Pages
-#        uses: peaceiris/actions-gh-pages@v3
-#        with:
-#          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-#          publish_dir: ./public  # This should be the directory with your reports and images
-#          force_orphan: true  # Create a new commit every time
+name: Run & Deploy Reports to GitHub Pages
+
+on:
+ push:
+   branches:
+     - main  # Trigger on changes to the main branch
+     - master
+
+ workflow_dispatch:
+
+jobs:
+ run-tests:
+   timeout-minutes: 60
+   name: Run Tests
+   runs-on: ubuntu-latest
+   steps:
+     - name: Checkout Code
+       uses: actions/checkout@v4
+
+     - name: Set up Java
+       uses: actions/setup-java@v4
+       with:
+         java-version: '17'
+         distribution: 'temurin'
+
+     - name: Cache Maven Packages
+       uses: actions/cache@v4
+       with:
+         path: ~/.m2
+         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+         restore-keys: |
+           ${{ runner.os }}-m2
+
+     - name: Install Dependencies
+       run: mvn install -DskipTests
+
+     - name: Set up Xvfb (for GUI applications, if needed)
+       run: |
+         sudo apt-get update
+         sudo apt-get install -y xvfb
+         Xvfb :99 &  # Start Xvfb on display :99
+         export DISPLAY=:99  # Set the DISPLAY environment variable
+
+     - name: Run Tests
+       run: |
+         export DISPLAY=:99  # Ensure DISPLAY is set
+         mvn test
+
+     - name: Archive Test Reports
+       uses: actions/upload-artifact@v4
+       if: ${{ always() }}  # Ensures this step runs even if tests fail
+       with:
+         name: Reports
+         path: Reports/  # Ensure this path points to the entire Reports folder
+         retention-days: 7  # Set the retention period to 7 days
+
+ deploy-pages:
+   name: Deploy Reports to GitHub Pages
+   runs-on: ubuntu-latest
+   if: ${{ always() }}  # Ensures this step runs even if tests fail
+   needs: run-tests
+   permissions:
+     contents: write
+
+   steps:
+     - name: Checkout Code
+       uses: actions/checkout@v4
+
+     - name: Download Test Reports
+       uses: actions/download-artifact@v4
+       with:
+         name: Reports
+         path: ./Reports
+
+     # Copy the report to the public directory for GitHub Pages
+     - name: Copy and Rename Playwright Report
+       run: |
+         mkdir -p public
+         cp -R Reports/* public/
+         mv public/Index.html public/index.html  # Rename the file to lowercase
+
+     - name: Deploy to GitHub Pages
+       uses: peaceiris/actions-gh-pages@v3
+       with:
+         github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+         publish_dir: ./public  # This should be the directory with your reports and images
+         force_orphan: true  # Create a new commit every time
